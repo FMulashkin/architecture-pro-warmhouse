@@ -16,19 +16,18 @@
 
 - Пользователи могут удаленно регулировать отопление (вкл/выкл через приложение)
 - Система поддерживает регулирование температуры, подключение новых сенсоров, удаление существующих сенсоров
-- …
 
 **Мониторинг температуры:**
 
 - Пользователи могут удаленная проверка температуры 
 - Система поддерживает проверку значений сенсоров, подключение новых сенсоров, удаление существующих сенсоров
-- …
 
 ### 2. Анализ архитектуры монолитного приложения
-БД: PostgreSQL
-ЯП: Go
-Взаимодействие: синхронное через HTTP
-
+- БД: PostgreSQL
+- ЯП: Go
+- Взаимодействие: синхронное через HTTP
+- Структура: монолит
+- Регистрация: закрытая
 
 ### 3. Определение доменов и границы контекстов
 As-Is:
@@ -58,24 +57,11 @@ To-Be:
 - Если количество пользователей сильно увеличиться, то монолитную систему будет очень сложно масштабировать
 - Сложность добавления интеграции с новыми устройствами
 - Сложность параллельной разработки и тестирования при росте системы
-
-Если же функционал системы планирует оставаться ограниченным, а сам продукт нишевым, то сильно усложнять разработку и переходить на микросервисы нет смысла
+- Если же функционал системы планирует оставаться ограниченным, а сам продукт нишевым, то сильно усложнять разработку и переходить на микросервисы нет смысла
 
 ### 5. Визуализация контекста системы — диаграмма С4
 
-Добавьте сюда диаграмму контекста в модели C4.
-
-Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
-
-```markdown
-[Текст ссылки](URL)
-```
-
-Замените `Текст ссылки` текстом, который хотите использовать для ссылки. Вместо `URL` вставьте адрес, на который должна вести ссылка. Например:
-
-```markdown
-[Посетите Яндекс](https://ya.ru/)
-```
+[C4 монолита](https://www.planttext.com?text=fLJVQzDG57uFv7-uziKAha7Oaq_3AhvCg0wVHzfSjqAQbEG6DqHOMyI73eOo44JcmnY-TdDnjMtQV-7U_yZlt3HDjsP3zAL9x_tE-NwSGpP2OGSYQhccSS_XRveUPzNr6jiLeXq-jgp0VblPQOhTg1w5F6Zudk2Ug3JybjLsRO_graBXkCswLLrVgz7HwnURLiiE1G_GiUartCZXKU1ILs2sgsXXWoMej5FIOWZV4tE0QTHu4FfUcGGyP2NvNKxbM1tAApmlv41rPKp_ImzCOsiVlArog1-4_GPCGdWv18xUOYPdwa0ESJILlr2Qu3tEYxUVxObooBtGrsJ7HA0-0ZDYccaYPp960phkgGFLfzA5gQVribD7NSqFnKx0jrvkqhLft6VoAqdHBKQgexeBlYT-v3bsi5zkF2B26p2cEf3UIQc9ZBqp3SR-FXB6_YkKhFoVOdc_OlqtEiTqpQ0p0R9Bj3TCBkLvcsg6rm5xxfTma_xA4tbE_F9SJj5eX6ljvYTf98gUjZW0xpWrg8wOXauXVPnvbXC6C4ueq1uSBg2Ng4sWkQy-eAxGTHhPoZB8JoYz8a5BFKhNjuHWPrfVaacv3i_Mw3DrmlK42YyfKPtR1MaqZLVSdUz4djjfxbiTGMtt3jS0qWBHX59euMnx98QeCf9yBxw0I7U1glujcy4Afq5-2tGjgEOKkQyJRHiYYQYp51OOXtTFQ5bxEg4V6gmvBHtmJ2_auSeCDhZduBFq1m00)
 
 # Задание 2. Проектирование микросервисной архитектуры
 
