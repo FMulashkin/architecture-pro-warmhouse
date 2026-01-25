@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  temperature-api:
+    build:
+      context: ../temperature-api
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    container_name: temperature-api
+    restart: unless-stopped
