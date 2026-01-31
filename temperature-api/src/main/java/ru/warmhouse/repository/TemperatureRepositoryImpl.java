@@ -39,7 +39,6 @@ public class TemperatureRepositoryImpl implements TemperatureRepository {
 
     @Override
     public Double getTemperatureByLocation(String location) {
-        random.setSeed(location.hashCode());
         return random.nextDouble(-20, 40);
     }
 }

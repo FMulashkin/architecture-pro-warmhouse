@@ -1,0 +1,19 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /notification
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/smarthome
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+device:
+  management:
+    url: ${DEVICE_MANAGEMENT_URL:http://device-management:8084}

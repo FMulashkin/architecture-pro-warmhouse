@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: smarthome-postgres
+    environment:
+      POSTGRES_DB: smarthome
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smarthome"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - smarthome-network
+
+  api-gateway:
+    build:
+      context: ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    container_name: ApiGateway
+    restart: unless-stopped
+    depends_on:
+      - smart-home
+      - postgres
+    networks:
+      - smarthome-network
+
+  smart-home:
+    build:
+      context: ../apps/smart_home
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    container_name: smart-home
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smarthome
+      TEMPERATURE_API_URL: http://temperature-api:8082
+      PORT: ":8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - smarthome-network
+
+  data-analytics:
+    build:
+      context: DataAnalyticsService
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    container_name: data-analitycs
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smarthome
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - smarthome-network
+
+  device-management:
+    build:
+      context: DeviceManagementService
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    container_name: device-management
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smarthome
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - smarthome-network
+
+  notifications:
+    build:
+      context: NotificationService
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    container_name: notifications
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smarthome
+      DEVICE_MANAGEMENT_URL: http://device-management:8084
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - smarthome-network
+
+  users:
+    build:
+      context: UserService
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8086"
+    container_name: users
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smarthome
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - smarthome-network
+
+volumes:
+  postgres_data:
+
+networks:
+  smarthome-network:
+    driver: bridge

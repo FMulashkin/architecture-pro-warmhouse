@@ -1,5 +1,3 @@
 # Default ignored files
 # Environment-dependent path to Maven home directory
-/.idea
-/.gigaide
-/target
+target

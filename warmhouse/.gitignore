@@ -2,4 +2,3 @@
 # Environment-dependent path to Maven home directory
 /.idea
 /.gigaide
-/target
