@@ -1,8 +1,16 @@
+FROM maven:3.8.4-openjdk-17 AS builder
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-COPY target/temperature-api-1.0.0.jar app.jar
+COPY --from=builder /app/target/temperature-api-1.0.0.jar app.jar
 
 EXPOSE 8081
 

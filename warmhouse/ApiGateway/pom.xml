@@ -8,6 +8,7 @@
     <groupId>ru.warmhouse</groupId>
     <artifactId>api-gateway</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

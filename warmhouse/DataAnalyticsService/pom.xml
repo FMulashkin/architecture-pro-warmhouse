@@ -12,6 +12,7 @@
     <artifactId>data-analytics</artifactId>
     <groupId>ru.warmhouse</groupId>
     <version>1.0.0</version>
+<packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>

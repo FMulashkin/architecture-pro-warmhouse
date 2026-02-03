@@ -1,14 +1,17 @@
-# Используем официально поддерживаемый образ Eclipse Temurin с JRE 17
+FROM maven:3.8.4-openjdk-17 AS builder
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
 FROM eclipse-temurin:17-jre-alpine
 
-# Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
 
-# Копируем JAR-файл (собираемый Maven'ом)
-COPY target/users-1.0.0.jar app.jar
+COPY --from=builder /app/target/users-1.0.0.jar app.jar
 
-# Открываем порт 8082
 EXPOSE 8082
 
-# Запускаем приложение
 ENTRYPOINT ["java", "-jar", "app.jar"]
